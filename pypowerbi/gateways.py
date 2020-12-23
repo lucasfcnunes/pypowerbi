@@ -41,6 +41,27 @@ class Gateways:
 
         return self._models_from_get_multiple_response(response, Gateway)
 
+    def get_gateway(self, gateway_id: str) -> Gateway:
+        """Return the specified gateway
+
+        :param gateway_id: The gateway id
+        :return: The gateway
+        """
+        # form the url
+        url = f'{self.base_url}/{self.gateways_snippet}/{gateway_id}'
+
+        # form the headers
+        headers = self.client.auth_header
+
+        # get the response
+        response = requests.get(url, headers=headers)
+
+        # 200 is the only successful code, raise an exception on any other response code
+        if response.status_code != 200:
+            raise HTTPError(response, f'Get Gateway request returned http error: {response.json()}')
+
+        return self._model_from_get_one_response(response, Gateway)
+
     def get_datasources(self, gateway_id: str) -> List[GatewayDatasource]:
         """Returns a list of datasources from the specified gateway
 
@@ -97,7 +118,7 @@ class Gateways:
         :param datasource_to_gateway_request: Request describing the datasource to be created
         """
         # form the url
-        url = f"{self.base_url}/{self.gateways_snippet}/{gateway_id}/{self.datasources_snippet}"
+        url = f'{self.base_url}/{self.gateways_snippet}/{gateway_id}/{self.datasources_snippet}'
 
         # define request body
         body = datasource_to_gateway_request.to_dict()
@@ -113,6 +134,66 @@ class Gateways:
             raise HTTPError(f'Create Datasource request returned the following http error: {response.json()}')
 
         return self._model_from_get_one_response(response, GatewayDatasource)
+
+    def delete_datasource(
+        self,
+        gateway_id: str,
+        datasource_id: str
+    ) -> None:
+        """Deletes the specified datasource from the specified gateway
+
+        :param gateway_id: The gateway id
+        :param datasource_id: The datasource id
+        :return: None
+        """
+        # form the url
+        url = f'{self.base_url}/{self.gateways_snippet}/{gateway_id}/{self.datasources_snippet}/{datasource_id}'
+
+        # form the headers
+        headers = self.client.auth_header
+
+        # get the response
+        response = requests.delete(url, headers=headers)
+
+        # 200 is the only successful code, raise an exception on any other response code
+        if response.status_code != 200:
+            raise HTTPError(f'Delete Datasource request returned the following http error: {response.json()}')
+
+        return None
+
+    def add_datasource_user(
+        self,
+        gateway_id: str,
+        datasource_id: str,
+        datasource_user: DatasourceUser
+    ) -> None:
+        """Grants or updates the permissions required to use the specified datasource for the specified user. Note:
+        This method does not work with a service principal, only with a username password flow, for which the user
+        has given consent.
+
+        :param gateway_id: The gateway id
+        :param datasource_id: The datasource id
+        :param datasource_user: The datasource user to add
+        """
+        # form the url
+        url = f'{self.base_url}/{self.gateways_snippet}/{gateway_id}/{self.datasources_snippet}/{datasource_id}/' \
+              f'{self.users_snippet}'
+
+        # define request body
+        body = datasource_user.as_set_values_dict()
+
+        # form the headers
+        headers = self.client.auth_header
+
+        # get the response
+        response = requests.post(url, headers=headers, json=body)
+
+        if response.status_code != 200:
+            # add datasource user requests return an empty body; get the error from headers instead
+            raise HTTPError(f'Add datasource user request returned the following http error: {response.json()} '
+                            f'with status code: {response.status_code}')
+
+        return None
 
     @classmethod
     def _models_from_get_multiple_response(
