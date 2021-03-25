@@ -1,8 +1,13 @@
 from unittest import TestCase
 
 from pypowerbi import CredentialType
-from pypowerbi.credentials import AnonymousCredentials, BasicCredentials, KeyCredentials, OAuth2Credentials, \
-    WindowsCredentials
+from pypowerbi.credentials import (
+    AnonymousCredentials,
+    BasicCredentials,
+    KeyCredentials,
+    OAuth2Credentials,
+    WindowsCredentials,
+)
 
 
 # The following tests are based on the examples found here:
@@ -16,8 +21,7 @@ class CredentialsTestCase(TestCase):
 
         self.assertEqual(expected, actual)
         self.assertEqual(
-            CredentialType.ANONYMOUS,
-            anonymous_credentials.CREDENTIAL_TYPE
+            CredentialType.ANONYMOUS, anonymous_credentials.CREDENTIAL_TYPE
         )
 
     def test_basic_credentials(self):
@@ -35,10 +39,7 @@ class CredentialsTestCase(TestCase):
             BasicCredentials("myUsername", "")
 
         self.assertEqual(expected, actual)
-        self.assertEqual(
-            CredentialType.BASIC,
-            basic_credentials.CREDENTIAL_TYPE
-        )
+        self.assertEqual(CredentialType.BASIC, basic_credentials.CREDENTIAL_TYPE)
 
     def test_key_credentials(self):
         key_credentials = KeyCredentials("ec....LA=")
@@ -52,10 +53,7 @@ class CredentialsTestCase(TestCase):
 
         self.assertEqual(expected, actual)
 
-        self.assertEqual(
-            CredentialType.KEY,
-            key_credentials.CREDENTIAL_TYPE
-        )
+        self.assertEqual(CredentialType.KEY, key_credentials.CREDENTIAL_TYPE)
 
     def test_o_auth_2_credentials(self):
         o_auth_2_credentials = OAuth2Credentials("eyJ0....fwtQ")
@@ -69,16 +67,15 @@ class CredentialsTestCase(TestCase):
 
         self.assertEqual(expected, actual)
 
-        self.assertEqual(
-            CredentialType.OAUTH2,
-            o_auth_2_credentials.CREDENTIAL_TYPE
-        )
+        self.assertEqual(CredentialType.OAUTH2, o_auth_2_credentials.CREDENTIAL_TYPE)
 
     def test_windows_credentials(self):
-        windows_credentials = WindowsCredentials(r'contoso\\john', "*****")
+        windows_credentials = WindowsCredentials(r"contoso\\john", "*****")
 
-        expected = r'{"credentialData":[{"name":"username","value":"contoso\\john"},' \
-                   r'{"name":"password","value":"*****"}]}'
+        expected = (
+            r'{"credentialData":[{"name":"username","value":"contoso\\john"},'
+            r'{"name":"password","value":"*****"}]}'
+        )
         actual = windows_credentials.to_json()
 
         with self.assertRaises(ValueError):
@@ -90,7 +87,4 @@ class CredentialsTestCase(TestCase):
             WindowsCredentials("myUsername", "")
 
         self.assertEqual(expected, actual)
-        self.assertEqual(
-            CredentialType.WINDOWS,
-            windows_credentials.CREDENTIAL_TYPE
-        )
+        self.assertEqual(CredentialType.WINDOWS, windows_credentials.CREDENTIAL_TYPE)

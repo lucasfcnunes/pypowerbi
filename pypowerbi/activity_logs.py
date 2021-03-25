@@ -7,14 +7,15 @@ from requests.exceptions import HTTPError
 
 
 class ActivityLogs:
-
     def __init__(self, client):
         self.client = client
-        self.base_url = f'{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}'
+        self.base_url = f"{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}"
 
         self.activities_events_snippet = "activityevents"
-        self.group_part = "admin"   # This is always admin. Not really a group, but follows the
-                                    # format of the rest of the library code
+        self.group_part = (
+            "admin"  # This is always admin. Not really a group, but follows the
+        )
+        # format of the rest of the library code
 
     def get_activity_logs(self, st, et=None, filter=None):
         """
@@ -53,7 +54,7 @@ class ActivityLogs:
 
         # form the url
         filter_snippet = f"startDateTime='{st_dt_str}'&endDateTime='{et_dt_str}'"
-        url = f'{self.base_url}/{self.group_part}/{self.activities_events_snippet}?{filter_snippet}'
+        url = f"{self.base_url}/{self.group_part}/{self.activities_events_snippet}?{filter_snippet}"
 
         if filter is not None:
             url += f"$filter={filter}"
@@ -66,7 +67,9 @@ class ActivityLogs:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Get Datasets request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Get Datasets request returned http error: {response.json()}"
+            )
 
         response_obj = response.json()
 
@@ -98,10 +101,14 @@ class ActivityLogs:
         # print(f"Took {cont_count} tries to exhaust continuation token for {len(activity_events)} events.")
 
         # Convert Datetime Strings to Python datetimes
-        _date_fmt_str = '%Y-%m-%dT%H:%M:%S'
+        _date_fmt_str = "%Y-%m-%dT%H:%M:%S"
         for event in activity_events:
-            event["CreationTime"] = datetime.datetime.strptime(event["CreationTime"], _date_fmt_str)
+            event["CreationTime"] = datetime.datetime.strptime(
+                event["CreationTime"], _date_fmt_str
+            )
             # Change the Timezone to UTC
-            event["CreationTime"] = event["CreationTime"].replace(tzinfo=datetime.timezone.utc)
+            event["CreationTime"] = event["CreationTime"].replace(
+                tzinfo=datetime.timezone.utc
+            )
 
         return activity_events

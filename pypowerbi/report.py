@@ -4,13 +4,13 @@ import json
 
 
 class Report:
-    id_key = 'id'
-    name_key = 'name'
-    web_url_key = 'webUrl'
-    embed_url_key = 'embedUrl'
-    dataset_id_key = 'datasetId'
-    target_workspace_id_key = 'targetWorkspaceId'
-    target_model_id_key = 'targetModelId'
+    id_key = "id"
+    name_key = "name"
+    web_url_key = "webUrl"
+    embed_url_key = "embedUrl"
+    dataset_id_key = "datasetId"
+    target_workspace_id_key = "targetWorkspaceId"
+    target_model_id_key = "targetModelId"
 
     def __init__(self, report_id, name, web_url, embed_url, dataset_id):
         self.id = report_id
@@ -31,18 +31,18 @@ class Report:
             report_id = str(dictionary[cls.id_key])
             # id cannot be whitespace
             if report_id.isspace():
-                raise RuntimeError(f'Report dict has empty {cls.id_key} key value')
+                raise RuntimeError(f"Report dict has empty {cls.id_key} key value")
         else:
-            raise RuntimeError(f'Report dict has no {cls.id_key} key')
+            raise RuntimeError(f"Report dict has no {cls.id_key} key")
 
         # name is required
         if cls.name_key in dictionary:
             report_name = str(dictionary[cls.name_key])
             # name cannot be whitespace
             if report_name.isspace():
-                raise RuntimeError(f'Report dict has empty {cls.name_key} key value')
+                raise RuntimeError(f"Report dict has empty {cls.name_key} key value")
         else:
-            raise RuntimeError(f'Report dict has no {cls.name_key} key')
+            raise RuntimeError(f"Report dict has no {cls.name_key} key")
 
         # web url is optional
         if cls.web_url_key in dictionary:
@@ -62,7 +62,7 @@ class Report:
         return Report(report_id, report_name, web_url, embed_url, dataset_id)
 
     def __repr__(self):
-        return f'<Report {str(self.__dict__)}>'
+        return f"<Report {str(self.__dict__)}>"
 
 
 class ReportEncoder(json.JSONEncoder):
@@ -72,5 +72,5 @@ class ReportEncoder(json.JSONEncoder):
             Report.name_key: o.name,
             Report.web_url_key: o.web_url,
             Report.embed_url_key: o.embed_url,
-            Report.dataset_id_key: o.dataset_id
+            Report.dataset_id_key: o.dataset_id,
         }

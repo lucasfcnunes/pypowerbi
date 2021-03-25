@@ -6,19 +6,28 @@ from typing import List, Optional, Dict, Union
 
 class Dataset:
     # json keys
-    id_key = 'id'
-    name_key = 'name'
-    add_rows_api_enabled_key = 'addRowsAPIEnabled'
-    configured_by_key = 'configuredBy'
-    is_refreshable_key = 'isRefreshable'
-    is_effective_identity_required_key = 'isEffectiveIdentityRequired'
-    is_effective_identity_roles_required_key = 'isEffectiveIdentityRolesRequired'
-    is_on_prem_gateway_required_key = 'isOnPremGatewayRequired'
-    tables_key = 'tables'
+    id_key = "id"
+    name_key = "name"
+    add_rows_api_enabled_key = "addRowsAPIEnabled"
+    configured_by_key = "configuredBy"
+    is_refreshable_key = "isRefreshable"
+    is_effective_identity_required_key = "isEffectiveIdentityRequired"
+    is_effective_identity_roles_required_key = "isEffectiveIdentityRolesRequired"
+    is_on_prem_gateway_required_key = "isOnPremGatewayRequired"
+    tables_key = "tables"
 
-    def __init__(self, name, dataset_id=None, tables=None, add_rows_api_enabled=None,
-                 configured_by=None, is_refreshable=None, is_effective_identity_required=None,
-                 is_effective_identity_roles_required=None, is_on_prem_gateway_required=None):
+    def __init__(
+        self,
+        name,
+        dataset_id=None,
+        tables=None,
+        add_rows_api_enabled=None,
+        configured_by=None,
+        is_refreshable=None,
+        is_effective_identity_required=None,
+        is_effective_identity_roles_required=None,
+        is_on_prem_gateway_required=None,
+    ):
         self.name = name
         self.id = dataset_id
         self.tables = tables
@@ -41,17 +50,17 @@ class Dataset:
             dataset_id = str(dictionary[Dataset.id_key])
             # id cannot be whitespace
             if dataset_id.isspace():
-                raise RuntimeError('Dataset dict has empty id key value')
+                raise RuntimeError("Dataset dict has empty id key value")
         else:
-            raise RuntimeError('Dataset dict has no id key')
+            raise RuntimeError("Dataset dict has no id key")
         # name is required
         if Dataset.name_key in dictionary:
             dataset_name = str(dictionary[Dataset.name_key])
             # name cannot be whitespace
             if dataset_id.isspace():
-                raise RuntimeError('Dataset dict has empty name key value')
+                raise RuntimeError("Dataset dict has empty name key value")
         else:
-            raise RuntimeError('Dataset dict has no name key')
+            raise RuntimeError("Dataset dict has no name key")
 
         # add api enabled is optional
         if Dataset.add_rows_api_enabled_key in dictionary:
@@ -73,30 +82,41 @@ class Dataset:
 
         # is effective identity required is optional
         if Dataset.is_effective_identity_required_key in dictionary:
-            is_effective_identity_required = bool(dictionary[Dataset.is_effective_identity_required_key])
+            is_effective_identity_required = bool(
+                dictionary[Dataset.is_effective_identity_required_key]
+            )
         else:
             is_effective_identity_required = None
 
         # is effective identity roles required is optional
         if Dataset.is_effective_identity_roles_required_key in dictionary:
-            is_effective_identity_roles_required = bool(dictionary[Dataset.is_effective_identity_roles_required_key])
+            is_effective_identity_roles_required = bool(
+                dictionary[Dataset.is_effective_identity_roles_required_key]
+            )
         else:
             is_effective_identity_roles_required = None
 
         # is on prem gateway required is optional
         if Dataset.is_on_prem_gateway_required_key in dictionary:
-            is_on_prem_gateway_required = bool(dictionary[Dataset.is_on_prem_gateway_required_key])
+            is_on_prem_gateway_required = bool(
+                dictionary[Dataset.is_on_prem_gateway_required_key]
+            )
         else:
             is_on_prem_gateway_required = None
 
-        return Dataset(dataset_name, dataset_id, add_rows_api_enabled=add_rows_api_enabled,
-                       configured_by=configured_by, is_refreshable=is_refreshable,
-                       is_effective_identity_required=is_effective_identity_required,
-                       is_effective_identity_roles_required=is_effective_identity_roles_required,
-                       is_on_prem_gateway_required=is_on_prem_gateway_required)
+        return Dataset(
+            dataset_name,
+            dataset_id,
+            add_rows_api_enabled=add_rows_api_enabled,
+            configured_by=configured_by,
+            is_refreshable=is_refreshable,
+            is_effective_identity_required=is_effective_identity_required,
+            is_effective_identity_roles_required=is_effective_identity_roles_required,
+            is_on_prem_gateway_required=is_on_prem_gateway_required,
+        )
 
     def __repr__(self):
-        return f'<Dataset {str(self.__dict__)}>'
+        return f"<Dataset {str(self.__dict__)}>"
 
 
 class DatasetEncoder(json.JSONEncoder):
@@ -112,10 +132,10 @@ class DatasetEncoder(json.JSONEncoder):
 
 
 class Table:
-    name_key = 'name'
-    columns_key = 'columns'
-    measures_key = 'measures'
-    rows_key = 'rows'
+    name_key = "name"
+    columns_key = "columns"
+    measures_key = "measures"
+    rows_key = "rows"
 
     @classmethod
     def from_dict(cls, dictionary):
@@ -129,9 +149,9 @@ class Table:
             table_name = str(dictionary[Table.name_key])
             # name cannot be whitespace
             if table_name.isspace():
-                raise RuntimeError('Table dict has empty name key value')
+                raise RuntimeError("Table dict has empty name key value")
         else:
-            raise RuntimeError('Table dict has no name key')
+            raise RuntimeError("Table dict has no name key")
 
         # columns are optional
         if Table.columns_key in dictionary:
@@ -141,7 +161,9 @@ class Table:
 
         # measures are optional
         if Table.measures_key in dictionary:
-            table_measures = [Table.from_dict(x) for x in dictionary[Table.measures_key]]
+            table_measures = [
+                Table.from_dict(x) for x in dictionary[Table.measures_key]
+            ]
         else:
             table_measures = None
 
@@ -154,7 +176,7 @@ class Table:
         self.rows = rows
 
     def __repr__(self):
-        return f'<Table {str(self.__dict__)}>'
+        return f"<Table {str(self.__dict__)}>"
 
 
 class TableEncoder(json.JSONEncoder):
@@ -165,11 +187,15 @@ class TableEncoder(json.JSONEncoder):
 
         if o.columns is not None:
             column_encoder = ColumnEncoder()
-            json_dict[Table.columns_key] = [column_encoder.default(x) for x in o.columns]
+            json_dict[Table.columns_key] = [
+                column_encoder.default(x) for x in o.columns
+            ]
 
         if o.measures is not None:
             measure_encoder = MeasureEncoder()
-            json_dict[Table.measures_key] = [measure_encoder.default(x) for x in o.measures]
+            json_dict[Table.measures_key] = [
+                measure_encoder.default(x) for x in o.measures
+            ]
 
         if o.rows is not None:
             row_encoder = RowEncoder()
@@ -179,10 +205,10 @@ class TableEncoder(json.JSONEncoder):
 
 
 class Measure:
-    name_key = 'name'
-    expression_key = 'expression'
-    formatstring_key = 'formatString'
-    is_hidden_key = 'isHidden'
+    name_key = "name"
+    expression_key = "expression"
+    formatstring_key = "formatString"
+    is_hidden_key = "isHidden"
 
     @classmethod
     def from_dict(cls, dictionary):
@@ -191,18 +217,18 @@ class Measure:
             measure_name = str(dictionary[Measure.name_key])
             # name cannot be whitespace
             if measure_name.isspace():
-                raise RuntimeError('Measure dict has empty name key value')
+                raise RuntimeError("Measure dict has empty name key value")
         else:
-            raise RuntimeError('Measure dict has no name key')
+            raise RuntimeError("Measure dict has no name key")
 
         # expression is required
         if Measure.expression_key in dictionary:
             measure_expression = str(dictionary[Measure.expression_key])
             # expression cannot be whitespace
             if measure_expression.isspace():
-                raise RuntimeError('Measure dict has empty expression key value')
+                raise RuntimeError("Measure dict has empty expression key value")
         else:
-            raise RuntimeError('Measure dict has no expression key')
+            raise RuntimeError("Measure dict has no expression key")
 
         if Measure.formatstring_key in dictionary:
             measure_formatstring = str(dictionary[Measure.formatstring_key])
@@ -214,8 +240,12 @@ class Measure:
         else:
             measure_is_hidden = None
 
-        return Measure(name=measure_name, expression=measure_expression, formatstring=measure_formatstring,
-                       is_hidden=measure_is_hidden)
+        return Measure(
+            name=measure_name,
+            expression=measure_expression,
+            formatstring=measure_formatstring,
+            is_hidden=measure_is_hidden,
+        )
 
     def __init__(self, name, expression, formatstring=None, is_hidden=None):
         self.name = name
@@ -224,7 +254,7 @@ class Measure:
         self.is_hidden = is_hidden
 
     def __repr__(self):
-        return f'<Measure {str(self.__dict__)}>'
+        return f"<Measure {str(self.__dict__)}>"
 
 
 class MeasureEncoder(json.JSONEncoder):
@@ -244,9 +274,9 @@ class MeasureEncoder(json.JSONEncoder):
 
 
 class Column:
-    name_key = 'name'
-    datatype_key = 'dataType'
-    formatstring_key = 'formatString'
+    name_key = "name"
+    datatype_key = "dataType"
+    formatstring_key = "formatString"
 
     def __init__(self, name, data_type, formatstring=None):
         self.name = name
@@ -254,15 +284,12 @@ class Column:
         self.formatstring = formatstring
 
     def __repr__(self):
-        return f'<Column {str(self.__dict__)}>'
+        return f"<Column {str(self.__dict__)}>"
 
 
 class ColumnEncoder(json.JSONEncoder):
     def default(self, o):
-        json_dict = {
-            Column.name_key: o.name,
-            Column.datatype_key: o.data_type
-        }
+        json_dict = {Column.name_key: o.name, Column.datatype_key: o.data_type}
 
         if o.formatstring is not None:
             json_dict[Column.formatstring_key] = o.formatstring
@@ -276,7 +303,7 @@ class Row:
             setattr(self, key, kwargs[key])
 
     def __repr__(self):
-        return f'<Row {str(self.__dict__)}>'
+        return f"<Row {str(self.__dict__)}>"
 
 
 class RowEncoder(json.JSONEncoder):
@@ -290,16 +317,18 @@ class ScheduleNotifyOption(Enum):
 
 
 class RefreshSchedule:
-    notify_option_key = 'NotifyOption'
-    days_key = 'days'
-    enabled_key = 'enabled'
-    local_time_zone_id_key = 'localTimeZoneId'
-    times_key = 'times'
+    notify_option_key = "NotifyOption"
+    days_key = "days"
+    enabled_key = "enabled"
+    local_time_zone_id_key = "localTimeZoneId"
+    times_key = "times"
 
     @classmethod
-    def from_dict(cls, dictionary: Dict[str, Union[str, bool]]) -> 'RefreshSchedule':
+    def from_dict(cls, dictionary: Dict[str, Union[str, bool]]) -> "RefreshSchedule":
         notify_option_value = dictionary.get(cls.notify_option_key, None)
-        notify_option = ScheduleNotifyOption(notify_option_value) if notify_option_value else None
+        notify_option = (
+            ScheduleNotifyOption(notify_option_value) if notify_option_value else None
+        )
         days = dictionary.get(cls.days_key, None)
         enabled = dictionary.get(cls.enabled_key, None)
         local_time_zone_id = dictionary.get(cls.local_time_zone_id_key, "")
@@ -313,7 +342,7 @@ class RefreshSchedule:
         days: Optional[List[str]] = None,
         enabled: Optional[bool] = None,
         local_time_zone_id: Optional[str] = "",
-        times: Optional[List[str]] = None
+        times: Optional[List[str]] = None,
     ):
         """Constructs a RefreshSchedule object
 
@@ -352,7 +381,7 @@ class RefreshSchedule:
         return set_values_dict
 
     def __repr__(self):
-        return f'<RefreshSchedule {str(self.as_set_values_dict())}>'
+        return f"<RefreshSchedule {str(self.as_set_values_dict())}>"
 
 
 class RefreshScheduleRequest:
@@ -366,9 +395,7 @@ class RefreshScheduleRequest:
         self.refresh_schedule = refresh_schedule
 
     def as_dict(self) -> Dict[str, Dict[str, Union[str, bool, List[str]]]]:
-        return {
-            self.value_key: self.refresh_schedule.as_set_values_dict()
-        }
+        return {self.value_key: self.refresh_schedule.as_set_values_dict()}
 
     def __repr__(self):
-        return f'<RefreshScheduleRequest {str(self.as_dict())}>'
+        return f"<RefreshScheduleRequest {str(self.as_dict())}>"

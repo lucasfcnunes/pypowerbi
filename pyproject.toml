@@ -32,14 +32,15 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]
-line-length = 88
-target-version = ['py36']
+# line-length = 88
+# target-version = ['py36']
 include = '\.pyi?$'
-# extend-exclude = '''
-# /(
-#   # The following are specific to Black, you probably don't want those.
-#   | blib2to3
-#   | tests/data
-#   | profiling
-# )/
-# '''
+extend-exclude = '''
+/(
+      \.venv
+    # The following are specific to Black, you probably don't want those.
+    | blib2to3
+    | tests/data
+    | profiling
+)/
+'''

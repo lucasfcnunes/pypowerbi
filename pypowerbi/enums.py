@@ -4,11 +4,11 @@ from enum import Enum
 
 
 class GroupUserAccessRight(Enum):
-    NONE = 'None'
-    MEMBER = 'Member'
-    ADMIN = 'Admin'
-    CONTRIBUTOR = 'Contributor'
-    VIEWER = 'Viewer'
+    NONE = "None"
+    MEMBER = "Member"
+    ADMIN = "Admin"
+    CONTRIBUTOR = "Contributor"
+    VIEWER = "Viewer"
 
 
 class PrincipalType(Enum):
@@ -19,33 +19,33 @@ class PrincipalType(Enum):
 
 class DatasourceUserAccessRight(Enum):
     # Removes permission to access the datasource
-    NONE = 'None'
+    NONE = "None"
     # Datasets owned by the user have read access to this datasource
-    READ = 'Read'
+    READ = "Read"
     # The user can override the effective identity for PowerBI Embedded
-    READ_OVERRIDE_EFFECTIVE_IDENTITY = 'ReadOverrideEffectiveIdentity'
+    READ_OVERRIDE_EFFECTIVE_IDENTITY = "ReadOverrideEffectiveIdentity"
 
 
 class CredentialType(Enum):
-    ANONYMOUS = 'Anonymous'
-    BASIC = 'Basic'
-    KEY = 'Key'
-    OAUTH2 = 'OAuth2'
-    WINDOWS = 'Windows'
+    ANONYMOUS = "Anonymous"
+    BASIC = "Basic"
+    KEY = "Key"
+    OAUTH2 = "OAuth2"
+    WINDOWS = "Windows"
 
 
 class EncryptedConnection(Enum):
-    ENCRYPTED = 'Encrypted'
-    NOT_ENCRYPTED = 'NotEncrypted'
+    ENCRYPTED = "Encrypted"
+    NOT_ENCRYPTED = "NotEncrypted"
 
 
 class EncryptionAlgorithm(Enum):
-    NONE = 'None'
-    RSA_OAEP = 'RSA-OAEP'
+    NONE = "None"
+    RSA_OAEP = "RSA-OAEP"
 
 
 class PrivacyLevel(Enum):
-    NONE = 'None'
-    PUBLIC = 'Public'
-    ORGANIZATIONAL = 'Organizational'
-    PRIVATE = 'Private'
+    NONE = "None"
+    PUBLIC = "Public"
+    ORGANIZATIONAL = "Organizational"
+    PRIVATE = "Private"

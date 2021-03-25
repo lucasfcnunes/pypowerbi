@@ -28,9 +28,9 @@ class PowerBIAPITests(TestCase):
     group_ids = PowerBITestSettings.group_ids
 
     # default test prefixes
-    test_dataset_prefix = 'testDataset_'
-    test_report_prefix = 'testReport_'
-    test_table_prefix = 'testTable_'
+    test_dataset_prefix = "testDataset_"
+    test_report_prefix = "testReport_"
+    test_table_prefix = "testTable_"
 
     dataset_counts = {}
     report_counts = {}
@@ -79,7 +79,9 @@ class PowerBIAPITests(TestCase):
         tables = cls.create_mock_tables(table_count)
 
         # create the dataset
-        dataset = Dataset(name=f'{cls.test_dataset_prefix}{datetime.datetime.utcnow()}', tables=tables)
+        dataset = Dataset(
+            name=f"{cls.test_dataset_prefix}{datetime.datetime.utcnow()}", tables=tables
+        )
 
         # post and return the result
         return client.datasets.post_dataset(dataset, group_id)
@@ -87,7 +89,9 @@ class PowerBIAPITests(TestCase):
     @classmethod
     def add_mock_dataset_with_tables(cls, client, tables, group_id=None):
         # create the dataset
-        dataset = Dataset(name=f'{cls.test_dataset_prefix}{datetime.datetime.utcnow()}', tables=tables)
+        dataset = Dataset(
+            name=f"{cls.test_dataset_prefix}{datetime.datetime.utcnow()}", tables=tables
+        )
 
         # post and return the result
         return client.datasets.post_dataset(dataset, group_id)
@@ -98,17 +102,19 @@ class PowerBIAPITests(TestCase):
         for x in range(0, table_count):
             # we add a column of each type for each table
             columns = [
-                Column(name='id', data_type='Int64'),
-                Column(name='name', data_type='string'),
-                Column(name='is_interesting', data_type='boolean'),
-                Column(name='cost_usd', data_type='double'),
-                Column(name='purchase_date', data_type='datetime'),
+                Column(name="id", data_type="Int64"),
+                Column(name="name", data_type="string"),
+                Column(name="is_interesting", data_type="boolean"),
+                Column(name="cost_usd", data_type="double"),
+                Column(name="purchase_date", data_type="datetime"),
             ]
 
-            table_name = f'{cls.test_table_prefix}{x}'
+            table_name = f"{cls.test_table_prefix}{x}"
 
             measures = [
-                Measure(name=f'entry_count_{x}', expression=f'COUNTROWS( \'{table_name}\' )')
+                Measure(
+                    name=f"entry_count_{x}", expression=f"COUNTROWS( '{table_name}' )"
+                )
             ]
 
             # add the table
@@ -120,21 +126,25 @@ class PowerBIAPITests(TestCase):
     def add_mock_report(cls, client, group_id):
         # to add a mock report, we clone an existing one
         reports = client.reports.get_reports(group_id)
-        return client.reports.clone_report(reports[0].id,
-                                           f'{cls.test_report_prefix}'
-                                           f'{datetime.datetime.utcnow()}',
-                                           group_id,
-                                           reports[0].dataset_id, group_id)
+        return client.reports.clone_report(
+            reports[0].id,
+            f"{cls.test_report_prefix}" f"{datetime.datetime.utcnow()}",
+            group_id,
+            reports[0].dataset_id,
+            group_id,
+        )
 
     def get_token(self):
-        context = adal.AuthenticationContext(authority=self.authority_url,
-                                             validate_authority=True,
-                                             api_version=None)
+        context = adal.AuthenticationContext(
+            authority=self.authority_url, validate_authority=True, api_version=None
+        )
 
-        return context.acquire_token_with_username_password(resource=self.resource_url,
-                                                            client_id=self.client_id,
-                                                            username=self.username,
-                                                            password=self.password)
+        return context.acquire_token_with_username_password(
+            resource=self.resource_url,
+            client_id=self.client_id,
+            username=self.username,
+            password=self.password,
+        )
 
     def assert_datasets_valid(self, datasets):
         self.assertIsNotNone(datasets)
@@ -222,22 +232,22 @@ class PowerBIAPITests(TestCase):
 
         # we add a column of each type
         columns = [
-            Column(name='id', data_type='Int64'),
-            Column(name='name', data_type='string'),
-            Column(name='is_interesting', data_type='boolean'),
-            Column(name='cost_usd', data_type='double'),
-            Column(name='purchase_date', data_type='datetime')
+            Column(name="id", data_type="Int64"),
+            Column(name="name", data_type="string"),
+            Column(name="is_interesting", data_type="boolean"),
+            Column(name="cost_usd", data_type="double"),
+            Column(name="purchase_date", data_type="datetime"),
         ]
 
-        table_name = f'{self.test_table_prefix}0'
+        table_name = f"{self.test_table_prefix}0"
 
         # add a measure
         measures = [
-            Measure(name='entry_count_0', expression=f'COUNTROWS( \'{table_name}\' )')
+            Measure(name="entry_count_0", expression=f"COUNTROWS( '{table_name}' )")
         ]
 
         table = Table(name=table_name, columns=columns, measures=measures)
-        dataset_name = f'{self.test_dataset_prefix}{datetime.datetime.utcnow()}'
+        dataset_name = f"{self.test_dataset_prefix}{datetime.datetime.utcnow()}"
         dataset = Dataset(name=dataset_name, tables=[table])
 
         # validate that the returned dataset is what we expected to be posted
@@ -326,8 +336,8 @@ class PowerBIAPITests(TestCase):
         dataset = self.add_mock_dataset(client, 1, group_id)
         tables = client.datasets.get_tables(dataset.id, group_id)
 
-        row0 = Row(id=1, name='yabbadabba')
-        row1 = Row(id=2, name='oogabooga')
+        row0 = Row(id=1, name="yabbadabba")
+        row1 = Row(id=2, name="oogabooga")
 
         client.datasets.post_rows(dataset.id, tables[0].name, [row0, row1], group_id)
         tables = client.datasets.get_tables(dataset.id, group_id)
@@ -345,8 +355,8 @@ class PowerBIAPITests(TestCase):
         dataset = self.add_mock_dataset(client, 1, group_id)
         tables = client.datasets.get_tables(dataset.id, group_id)
 
-        row0 = Row(id=1, name='yabbadabba')
-        row1 = Row(id=2, name='oogabooga')
+        row0 = Row(id=1, name="yabbadabba")
+        row1 = Row(id=2, name="oogabooga")
 
         client.datasets.post_rows(dataset.id, tables[0].name, [row0, row1], group_id)
         client.datasets.delete_rows(dataset.id, tables[0].name, group_id)
@@ -405,11 +415,13 @@ class PowerBIAPITests(TestCase):
         self.assert_reports_valid(reports)
 
         # close the first report
-        report = client.reports.clone_report(reports[0].id,
-                                             f'{self.test_report_prefix}'
-                                             f'{datetime.datetime.utcnow()}',
-                                             None,
-                                             reports[0].dataset_id, group_id)
+        report = client.reports.clone_report(
+            reports[0].id,
+            f"{self.test_report_prefix}" f"{datetime.datetime.utcnow()}",
+            None,
+            reports[0].dataset_id,
+            group_id,
+        )
 
         # validate that the cloned report is valid
         self.assert_report_valid(report)
@@ -530,7 +542,7 @@ class PowerBIAPITests(TestCase):
         self.assertEqual(len(reports), self.report_counts[group_id])
 
         # create the the token request with just a view access level
-        token_request = TokenRequest('view')
+        token_request = TokenRequest("view")
 
         # get the token
         token = client.reports.generate_token(reports[0].id, token_request, group_id)
@@ -547,7 +559,9 @@ class PowerBIAPITests(TestCase):
 
     def _test_upload_file_impl(self, client, group_id):
         # upload the file, get back an import object
-        import_object = client.imports.upload_file('test_report.pbix', 'test_report', None, group_id)
+        import_object = client.imports.upload_file(
+            "test_report.pbix", "test_report", None, group_id
+        )
         self.assertIsNotNone(import_object)
 
         # ensure that there is at least one import
@@ -564,7 +578,9 @@ class PowerBIAPITests(TestCase):
         self.assertTrue(found)
 
         checks = 0
-        while import_object.import_state != Import.import_state_succeeded and checks < 3:
+        while (
+            import_object.import_state != Import.import_state_succeeded and checks < 3
+        ):
             time.sleep(1)
             # get the import object again to check the import state
             import_object = client.imports.get_import(import_object.id, group_id)

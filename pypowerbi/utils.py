@@ -8,8 +8,8 @@ This file contains helper and utility functions used elsewhere in the library.
 
 
 # Datetime's come in from PowerBI in the format 2019-03-05T03:09:31.493Z
-_date_fmt_str = '%Y-%m-%dT%H:%M:%S.%fZ'
-_date_fmt_str2 = '%Y-%m-%dT%H:%M:%SZ'
+_date_fmt_str = "%Y-%m-%dT%H:%M:%S.%fZ"
+_date_fmt_str2 = "%Y-%m-%dT%H:%M:%SZ"
 
 
 def date_from_powerbi_str(dstr):
@@ -44,7 +44,7 @@ def convert_datetime_fields(list_of_dicts, fields_to_convert):
         new_rec = rec.copy()
         new_list.append(new_rec)
         for field in fields_to_convert:
-            if field in new_rec.keys() and new_rec[field] not in [None, '']:
+            if field in new_rec.keys() and new_rec[field] not in [None, ""]:
                 new_rec[field] = date_from_powerbi_str(new_rec[field])
 
     return new_list

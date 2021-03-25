@@ -19,8 +19,9 @@ class CredentialsBase:
         )
 
     def to_json(self) -> str:
-        return json.dumps(self.credential_data, separators=(',', ':'))\
-            .replace('\\\\', '\\')
+        return json.dumps(self.credential_data, separators=(",", ":")).replace(
+            "\\\\", "\\"
+        )
 
 
 class UsernamePasswordCredentials(CredentialsBase):
@@ -50,7 +51,7 @@ class AnonymousCredentials(CredentialsBase):
         self.credential_data[self.credential_data_key] = ""
 
     def __repr__(self) -> str:
-        return f'<AnonymousCredentials>'
+        return f"<AnonymousCredentials>"
 
 
 class BasicCredentials(UsernamePasswordCredentials):
@@ -60,7 +61,7 @@ class BasicCredentials(UsernamePasswordCredentials):
         super().__init__(username, password)
 
     def __repr__(self) -> str:
-        return f'<BasicCredentials username={self.username}>'
+        return f"<BasicCredentials username={self.username}>"
 
 
 class KeyCredentials(CredentialsBase):
@@ -78,7 +79,7 @@ class KeyCredentials(CredentialsBase):
         super().add_credential_data(self.key_key, key)
 
     def __repr__(self) -> str:
-        return f'<KeyCredentials>'
+        return f"<KeyCredentials>"
 
 
 class OAuth2Credentials(CredentialsBase):
@@ -94,7 +95,7 @@ class OAuth2Credentials(CredentialsBase):
         super().add_credential_data(self.access_token_key, access_token)
 
     def __repr__(self) -> str:
-        return f'<OAuth2Credentials>'
+        return f"<OAuth2Credentials>"
 
 
 class WindowsCredentials(UsernamePasswordCredentials):
@@ -104,4 +105,4 @@ class WindowsCredentials(UsernamePasswordCredentials):
         super().__init__(username, password)
 
     def __repr__(self):
-        return f'<WindowsCredentials username={self.username}>'
+        return f"<WindowsCredentials username={self.username}>"

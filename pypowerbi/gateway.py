@@ -3,19 +3,21 @@ import json
 from typing import Dict, Union, Optional
 
 from .base import Deserializable
-from .enums import CredentialType, DatasourceUserAccessRight, PrincipalType, EncryptedConnection, EncryptionAlgorithm, \
-    PrivacyLevel
+from .enums import (
+    CredentialType,
+    DatasourceUserAccessRight,
+    PrincipalType,
+    EncryptedConnection,
+    EncryptionAlgorithm,
+    PrivacyLevel,
+)
 
 
 class GatewayPublicKey(Deserializable):
-    exponent_key = 'exponent'
-    modulus_key = 'modulus'
+    exponent_key = "exponent"
+    modulus_key = "modulus"
 
-    def __init__(
-            self,
-            exponent: str,
-            modulus: str
-    ):
+    def __init__(self, exponent: str, modulus: str):
         """Constructs a GatewayPublicKey object
 
         :param exponent: The exponent of the public key
@@ -25,13 +27,10 @@ class GatewayPublicKey(Deserializable):
         self.modulus = modulus
 
     def as_dict(self) -> Dict[str, str]:
-        return {
-            self.exponent_key: self.exponent,
-            self.modulus_key: self.modulus
-        }
+        return {self.exponent_key: self.exponent, self.modulus_key: self.modulus}
 
     @classmethod
-    def from_dict(cls, dictionary: Dict[str, str]) -> 'GatewayPublicKey':
+    def from_dict(cls, dictionary: Dict[str, str]) -> "GatewayPublicKey":
         """Constructs a GatewayPublicKey from a dictionary
 
         :param dictionary: the dictionary describing the GatewayPublicKey
@@ -44,25 +43,25 @@ class GatewayPublicKey(Deserializable):
         return cls(exponent, modulus)
 
     def __repr__(self) -> str:
-        return f'<GatewayPublicKey exponent={self.exponent} modulus={self.modulus}>'
+        return f"<GatewayPublicKey exponent={self.exponent} modulus={self.modulus}>"
 
 
 class Gateway(Deserializable):
-    id_key = 'id'
-    name_key = 'name'
-    type_key = 'type'
-    gateway_annotation_key = 'gatewayAnnotation'
-    public_key_key = 'publicKey'
-    status_key = 'gatewayStatus'
+    id_key = "id"
+    name_key = "name"
+    type_key = "type"
+    gateway_annotation_key = "gatewayAnnotation"
+    public_key_key = "publicKey"
+    status_key = "gatewayStatus"
 
     def __init__(
-            self,
-            gateway_id: str,
-            name: str,
-            gateway_type: str,
-            gateway_annotation: str,
-            public_key: GatewayPublicKey,
-            status: str
+        self,
+        gateway_id: str,
+        name: str,
+        gateway_type: str,
+        gateway_annotation: str,
+        public_key: GatewayPublicKey,
+        status: str,
     ):
         """Constructs a Gateway object
 
@@ -81,7 +80,7 @@ class Gateway(Deserializable):
         self.status = status
 
     @classmethod
-    def from_dict(cls, dictionary: Dict[str, Union[str, Dict[str, str]]]) -> 'Gateway':
+    def from_dict(cls, dictionary: Dict[str, Union[str, Dict[str, str]]]) -> "Gateway":
         """Constructs a Gateway object from a dict
 
         :param dictionary: Dictionary describing the gateway
@@ -98,28 +97,30 @@ class Gateway(Deserializable):
         public_key = GatewayPublicKey.from_dict(dictionary.get(cls.public_key_key))
         status = dictionary.get(cls.status_key)
 
-        return cls(gateway_id, name, gateway_type, gateway_annotation, public_key, status)
+        return cls(
+            gateway_id, name, gateway_type, gateway_annotation, public_key, status
+        )
 
     def __repr__(self) -> str:
-        return f'<Gateway id={self.id} name={self.name}>'
+        return f"<Gateway id={self.id} name={self.name}>"
 
 
 class GatewayDatasource(Deserializable):
-    gateway_datasource_id_key = 'id'
-    gateway_id_key = 'gatewayId'
-    credential_type_key = 'credentialType'
-    datasource_name_key = 'datasourceName'
-    datasource_type_key = 'datasourceType'
-    connection_details_key = 'connectionDetails'
+    gateway_datasource_id_key = "id"
+    gateway_id_key = "gatewayId"
+    credential_type_key = "credentialType"
+    datasource_name_key = "datasourceName"
+    datasource_type_key = "datasourceType"
+    connection_details_key = "connectionDetails"
 
     def __init__(
-            self,
-            gateway_datasource_id: str,
-            gateway_id: str,
-            credential_type: CredentialType,
-            datasource_name: str,
-            datasource_type: str,
-            connection_details: str
+        self,
+        gateway_datasource_id: str,
+        gateway_id: str,
+        credential_type: CredentialType,
+        datasource_name: str,
+        datasource_type: str,
+        connection_details: str,
     ):
         """Constructs a GatewayDatasource object
 
@@ -138,7 +139,7 @@ class GatewayDatasource(Deserializable):
         self.connection_details = connection_details
 
     @classmethod
-    def from_dict(cls, dictionary: Dict[str, str]) -> 'GatewayDatasource':
+    def from_dict(cls, dictionary: Dict[str, str]) -> "GatewayDatasource":
         """Constructs a GatewayDatasource object from a dict
 
         :param dictionary: Dictionary describing the gatewayDatasource
@@ -162,19 +163,19 @@ class GatewayDatasource(Deserializable):
             credential_type,
             datasource_name,
             datasource_type,
-            connection_details
+            connection_details,
         )
 
     def __repr__(self):
-        return f'<GatewayDatasource id={self.id} name={self.datasource_name} type={self.datasource_type}>'
+        return f"<GatewayDatasource id={self.id} name={self.datasource_name} type={self.datasource_type}>"
 
 
 class DatasourceUser(Deserializable):
-    datasource_access_right_key = 'datasourceAccessRight'
-    email_address_key = 'emailAddress'
-    display_name_key = 'displayName'
-    identifier_key = 'identifier'
-    principal_type_key = 'principalType'
+    datasource_access_right_key = "datasourceAccessRight"
+    email_address_key = "emailAddress"
+    display_name_key = "displayName"
+    identifier_key = "identifier"
+    principal_type_key = "principalType"
 
     def __init__(
         self,
@@ -182,7 +183,7 @@ class DatasourceUser(Deserializable):
         email_address: str = "",
         display_name: str = "",
         identifier: str = "",
-        principal_type: Optional[PrincipalType] = None
+        principal_type: Optional[PrincipalType] = None,
     ):
         """Constructs a DataSourceUser object
 
@@ -199,24 +200,37 @@ class DatasourceUser(Deserializable):
         self.principal_type = principal_type
 
     @classmethod
-    def from_dict(cls, dictionary: Dict[str, str]) -> 'DatasourceUser':
+    def from_dict(cls, dictionary: Dict[str, str]) -> "DatasourceUser":
         datasource_user_id = dictionary.get(cls.identifier_key)
         if datasource_user_id is None:
             raise RuntimeError("DatasourceUser dictionary has no identifier key")
 
-        datasource_user_access_right = DatasourceUserAccessRight(dictionary.get(cls.datasource_access_right_key))
+        datasource_user_access_right = DatasourceUserAccessRight(
+            dictionary.get(cls.datasource_access_right_key)
+        )
         email_address = dictionary.get(cls.email_address_key, "")
         display_name = dictionary.get(cls.display_name_key, "")
         principal_type_value = dictionary.get(cls.principal_type_key, None)
-        principal_type = PrincipalType(principal_type_value) if principal_type_value is not None \
+        principal_type = (
+            PrincipalType(principal_type_value)
+            if principal_type_value is not None
             else principal_type_value
+        )
 
-        return cls(datasource_user_access_right, email_address, display_name, datasource_user_id, principal_type)
+        return cls(
+            datasource_user_access_right,
+            email_address,
+            display_name,
+            datasource_user_id,
+            principal_type,
+        )
 
     def as_set_values_dict(self) -> Dict[str, str]:
         set_values_dict = dict()
 
-        set_values_dict[self.datasource_access_right_key] = self.datasource_access_right.value
+        set_values_dict[
+            self.datasource_access_right_key
+        ] = self.datasource_access_right.value
 
         if self.email_address:
             set_values_dict[self.email_address_key] = self.email_address
@@ -233,7 +247,7 @@ class DatasourceUser(Deserializable):
         return set_values_dict
 
     def __repr__(self) -> str:
-        return f'<DatasourceUser id={self.identifier} type={self.principal_type.name} display_name={self.display_name}>'
+        return f"<DatasourceUser id={self.identifier} type={self.principal_type.name} display_name={self.display_name}>"
 
 
 class DatasourceConnectionDetails:
@@ -241,12 +255,7 @@ class DatasourceConnectionDetails:
     database_key = "database"
     url_key = "url"
 
-    def __init__(
-        self,
-        server: str = "",
-        database: str = "",
-        url: str = ""
-    ):
+    def __init__(self, server: str = "", database: str = "", url: str = ""):
         """Creates a DatasourceConnectionDetails object
 
         :param server: The connection server
@@ -258,11 +267,11 @@ class DatasourceConnectionDetails:
         self.url = url
 
     def __repr__(self):
-        server_part = f'server={self.server}' if self.server else self.server
-        database_part = f'database={self.database}' if self.database else self.database
-        url_part = f'url={self.url}' if self.url else self.url
+        server_part = f"server={self.server}" if self.server else self.server
+        database_part = f"database={self.database}" if self.database else self.database
+        url_part = f"url={self.url}" if self.url else self.url
 
-        return f'<DatasourceConnectionDetails {server_part} {database_part} {url_part}>'
+        return f"<DatasourceConnectionDetails {server_part} {database_part} {url_part}>"
 
     def as_set_values_dict(self) -> Dict[str, str]:
         """Returns a dictionary with only those values of attributes that are set
@@ -293,9 +302,7 @@ class DatasourceConnectionDetails:
         # remove spaces between object keys and values
         # replace double backslashes with single slashes
         # remove double quotes at start and end of str
-        return json.dumps(json_dict) \
-            .replace(r'": ', r'":') \
-            .replace('\\\\', '\\')
+        return json.dumps(json_dict).replace(r'": ', r'":').replace("\\\\", "\\")
 
 
 class CredentialDetails:
@@ -315,7 +322,7 @@ class CredentialDetails:
         encryption_algorithm: EncryptionAlgorithm,
         privacy_level: PrivacyLevel,
         use_caller_aad_identity: Optional[bool] = None,
-        use_end_user_o_auth_2_credentials: Optional[bool] = None
+        use_end_user_o_auth_2_credentials: Optional[bool] = None,
     ):
         """Constructs a CredentialsDetails object
 
@@ -345,7 +352,7 @@ class CredentialDetails:
             self.encryption_algorithm_key: self.encryption_algorithm.value,
             self.privacy_level_key: self.privacy_level.value,
             self.use_caller_aad_identity_key: self.use_caller_aad_identity,
-            self.use_end_user_o_auth_2_credentials_key: self.use_end_user_o_auth_2_credentials
+            self.use_end_user_o_auth_2_credentials_key: self.use_end_user_o_auth_2_credentials,
         }
 
     def __repr__(self) -> str:
@@ -363,7 +370,7 @@ class PublishDatasourceToGatewayRequest:
         datasource_type: str,
         connection_details: str,
         credential_details: CredentialDetails,
-        datasource_name: str
+        datasource_name: str,
     ):
         """Constructs a PublishDatasourceToGatewayRequest
 
@@ -382,10 +389,12 @@ class PublishDatasourceToGatewayRequest:
             self.datasource_type_key: self.datasource_type,
             self.connection_details_key: self.connection_details,
             self.credential_details_key: self.credential_details.to_dict(),
-            self.datasource_name_key: self.datasource_name
+            self.datasource_name_key: self.datasource_name,
         }
 
     def __repr__(self):
-        return '<PublishDatasourceToGatewayRequest ' \
-               f'name={self.datasource_name} ' \
-               f'type={self.datasource_type}>'
+        return (
+            "<PublishDatasourceToGatewayRequest "
+            f"name={self.datasource_name} "
+            f"type={self.datasource_type}>"
+        )

@@ -9,22 +9,22 @@ from .dataset import *
 
 class Datasets:
     # url snippets
-    groups_snippet = 'groups'
-    datasets_snippet = 'datasets'
-    tables_snippet = 'tables'
-    rows_snippet = 'rows'
-    parameters_snippet = 'parameters'
-    set_parameters_snippet = 'Default.UpdateParameters'
-    bind_gateway_snippet = 'Default.BindToGateway'
-    refreshes_snippet = 'refreshes'
-    refresh_schedule_snippet = 'refreshSchedule'
+    groups_snippet = "groups"
+    datasets_snippet = "datasets"
+    tables_snippet = "tables"
+    rows_snippet = "rows"
+    parameters_snippet = "parameters"
+    set_parameters_snippet = "Default.UpdateParameters"
+    bind_gateway_snippet = "Default.BindToGateway"
+    refreshes_snippet = "refreshes"
+    refresh_schedule_snippet = "refreshSchedule"
 
     # json keys
-    get_datasets_value_key = 'value'
+    get_datasets_value_key = "value"
 
     def __init__(self, client):
         self.client = client
-        self.base_url = f'{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}'
+        self.base_url = f"{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}"
 
     def count(self, group_id=None):
         """
@@ -58,12 +58,12 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}"
         # form the headers
         headers = self.client.auth_header
 
@@ -72,7 +72,9 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Get Datasets request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Get Datasets request returned http error: {response.json()}"
+            )
 
         return self.datasets_from_get_datasets_response(response)
 
@@ -86,12 +88,12 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}"
         # form the headers
         headers = self.client.auth_header
         # get the response
@@ -99,7 +101,9 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Get Datasets request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Get Datasets request returned http error: {response.json()}"
+            )
 
         return Dataset.from_dict(json.loads(response.text))
 
@@ -113,12 +117,12 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}"
         # form the headers
         headers = self.client.auth_header
         # form the json dict
@@ -129,7 +133,9 @@ class Datasets:
 
         # 201 - Created. The request was fulfilled and a new Dataset was created.
         if response.status_code != 201:
-            raise HTTPError(response, f'Post Datasets request returned http code: {response.json()}')
+            raise HTTPError(
+                response, f"Post Datasets request returned http code: {response.json()}"
+            )
 
         return Dataset.from_dict(json.loads(response.text))
 
@@ -141,12 +147,12 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}"
         # form the headers
         headers = self.client.auth_header
 
@@ -155,7 +161,10 @@ class Datasets:
 
         # 200 is the only successful code
         if response.status_code != 200:
-            raise HTTPError(response, f'Delete Dataset request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Delete Dataset request returned http error: {response.json()}",
+            )
 
     def delete_all_datasets(self, group_id=None):
         """
@@ -177,12 +186,12 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.tables_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.tables_snippet}"
         # form the headers
         headers = self.client.auth_header
 
@@ -191,7 +200,9 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Get Datasets request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Get Datasets request returned http error: {response.json()}"
+            )
 
         return self.tables_from_get_tables_response(response)
 
@@ -206,13 +217,15 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
             # form the url
-            url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/' \
-                  f'{self.tables_snippet}/{table_name}'
+            url = (
+                f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/"
+                f"{self.tables_snippet}/{table_name}"
+            )
             # form the headers
             headers = self.client.auth_header
             # form the json dict
@@ -223,7 +236,9 @@ class Datasets:
 
             # 200 is the only successful code
             if response.status_code != 200:
-                raise HTTPError(response, f'Post row request returned http error: {response.json()}')
+                raise HTTPError(
+                    response, f"Post row request returned http error: {response.json()}"
+                )
 
     def post_rows(self, dataset_id, table_name, rows, group_id=None):
         """
@@ -236,27 +251,29 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/' \
-              f'{self.tables_snippet}/{table_name}/{self.rows_snippet}'
+        url = (
+            f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/"
+            f"{self.tables_snippet}/{table_name}/{self.rows_snippet}"
+        )
         # form the headers
         headers = self.client.auth_header
         # form the json dict
         row_encoder = RowEncoder()
-        json_dict = {
-            'rows': [row_encoder.default(x) for x in rows]
-        }
+        json_dict = {"rows": [row_encoder.default(x) for x in rows]}
 
         # get the response
         response = requests.post(url, headers=headers, json=json_dict)
 
         # 200 is the only successful code
         if response.status_code != 200:
-            raise HTTPError(response, f'Post row request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Post row request returned http error: {response.json()}"
+            )
 
     def delete_rows(self, dataset_id, table_name, group_id=None):
         """
@@ -268,13 +285,15 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/' \
-              f'{self.tables_snippet}/{table_name}/{self.rows_snippet}'
+        url = (
+            f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/"
+            f"{self.tables_snippet}/{table_name}/{self.rows_snippet}"
+        )
         # form the headers
         headers = self.client.auth_header
 
@@ -283,7 +302,9 @@ class Datasets:
 
         # 200 is the only successful code
         if response.status_code != 200:
-            raise HTTPError(response, f'Post row request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Post row request returned http error: {response.json()}"
+            )
 
     def get_dataset_parameters(self, dataset_id, group_id=None):
         """
@@ -295,12 +316,12 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.parameters_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.parameters_snippet}"
         # form the headers
         headers = self.client.auth_header
         # get the response
@@ -308,7 +329,10 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Get Dataset parameters request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Get Dataset parameters request returned http error: {response.json()}",
+            )
 
         return json.loads(response.text)
 
@@ -322,11 +346,11 @@ class Datasets:
         :return: The dataset parameters returned by the API
         """
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.set_parameters_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.set_parameters_snippet}"
 
         update_details = [{"name": k, "newValue": str(v)} for k, v in params.items()]
         body = {"updateDetails": update_details}
@@ -336,7 +360,10 @@ class Datasets:
         response = requests.post(url, headers=headers, json=body)
 
         if response.status_code != 200:
-            raise HTTPError(response, f'Setting dataset parameters failed with http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Setting dataset parameters failed with http error: {response.json()}",
+            )
 
     def refresh_dataset(self, dataset_id, notify_option=None, group_id=None):
         """
@@ -347,20 +374,18 @@ class Datasets:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refreshes_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refreshes_snippet}"
 
         # form the headers
         headers = self.client.auth_header
 
         if notify_option is not None:
-            json_dict = {
-                'notifyOption': notify_option
-            }
+            json_dict = {"notifyOption": notify_option}
         else:
             json_dict = None
 
@@ -369,22 +394,25 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 202:
-            raise HTTPError(response, f'Refresh dataset request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Refresh dataset request returned http error: {response.json()}",
+            )
 
     def get_dataset_gateway_datasources(self, dataset_id, group_id=None):
         """
-                Gets the gateway datasources for a dataset
-                :param dataset_id: The id of the dataset
-                :param group_id: The optional id of the group
-                """
+        Gets the gateway datasources for a dataset
+        :param dataset_id: The id of the dataset
+        :param group_id: The optional id of the group
+        """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}{self.datasets_snippet}/{dataset_id}/datasources'
+        url = f"{self.base_url}{groups_part}{self.datasets_snippet}/{dataset_id}/datasources"
 
         # form the headers
         headers = self.client.auth_header
@@ -395,7 +423,10 @@ class Datasets:
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
             print(url)
-            raise HTTPError(response, f'Dataset gateway datasources request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Dataset gateway datasources request returned http error: {response.json()}",
+            )
 
         data_sources = json.loads(response.text)["value"]
 
@@ -403,18 +434,18 @@ class Datasets:
 
     def bind_dataset_gateway(self, dataset_id, gateway_id, group_id=None):
         """
-                Binds a dataset to a gateway
-                https://docs.microsoft.com/en-gb/rest/api/power-bi/datasets/bindtogatewayingroup
-                :param dataset_id: The id of the dataset
-                :param gateway_id: The id of the gateway
-                :param group_id: The optional id of the group
-                """
+        Binds a dataset to a gateway
+        https://docs.microsoft.com/en-gb/rest/api/power-bi/datasets/bindtogatewayingroup
+        :param dataset_id: The id of the dataset
+        :param gateway_id: The id of the gateway
+        :param group_id: The optional id of the group
+        """
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.bind_gateway_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.bind_gateway_snippet}"
 
         body = {"gatewayObjectId": gateway_id}
         headers = self.client.auth_header
@@ -422,26 +453,29 @@ class Datasets:
         response = requests.post(url, headers=headers, json=body)
 
         if response.status_code != 200:
-            raise HTTPError(response, f'Binding gateway to dataset failed with http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Binding gateway to dataset failed with http error: {response.json()}",
+            )
 
     def get_dataset_refresh_history(self, dataset_id, group_id=None, top=None):
         """
-                Gets the refresh history of a dataset
-                :param dataset_id: The id of the dataset to refresh
-                :param group_id: The optional id of the group
-                :param top: The number of refreshes to retrieve. 5 will get the last 5 refreshes.
-                """
+        Gets the refresh history of a dataset
+        :param dataset_id: The id of the dataset to refresh
+        :param group_id: The optional id of the group
+        :param top: The number of refreshes to retrieve. 5 will get the last 5 refreshes.
+        """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refreshes_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refreshes_snippet}"
 
         if top is not None:
-            url = f'{url}?$top={top}'
+            url = f"{url}?$top={top}"
 
         # form the headers
         headers = self.client.auth_header
@@ -451,12 +485,15 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Dataset refresh history request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Dataset refresh history request returned http error: {response.json()}",
+            )
 
         refresh_data = json.loads(response.text)["value"]
 
         # Convert the date strings into datetime objects
-        time_fields = ['startTime', 'endTime']
+        time_fields = ["startTime", "endTime"]
         refresh_data = convert_datetime_fields(refresh_data, time_fields)
 
         return refresh_data
@@ -465,7 +502,7 @@ class Datasets:
         self,
         dataset_id: str,
         refresh_schedule: RefreshSchedule,
-        group_id: Optional[str] = None
+        group_id: Optional[str] = None,
     ):
         """Updates the refresh schedule for a given dataset in a given workspace.
 
@@ -475,12 +512,12 @@ class Datasets:
         assumed.
         """
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refresh_schedule_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refresh_schedule_snippet}"
 
         # form the headers
         headers = self.client.auth_header
@@ -493,7 +530,9 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(f'Update refresh schedule request returned the following http error:{response.json()}')
+            raise HTTPError(
+                f"Update refresh schedule request returned the following http error:{response.json()}"
+            )
 
     def get_refresh_schedule(self, dataset_id: str, group_id: Optional[str] = None):
         """Retrieves the refresh schedule for a given dataset and group id
@@ -502,12 +541,12 @@ class Datasets:
         :param group_id:  The group in which the dataset resides. If None 'My Workspace' is used.
         """
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refresh_schedule_snippet}'
+        url = f"{self.base_url}{groups_part}/{self.datasets_snippet}/{dataset_id}/{self.refresh_schedule_snippet}"
 
         # form the headers
         headers = self.client.auth_header
@@ -517,10 +556,11 @@ class Datasets:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(f'Get refresh schedule request returned the following http error:{response.json()}')
+            raise HTTPError(
+                f"Get refresh schedule request returned the following http error:{response.json()}"
+            )
 
         return self.refresh_schedule_from_get_refresh_schedule_response(response)
-
 
     @classmethod
     def datasets_from_get_datasets_response(cls, response):
@@ -555,6 +595,8 @@ class Datasets:
         return tables
 
     @classmethod
-    def refresh_schedule_from_get_refresh_schedule_response(cls, response: requests.Response):
+    def refresh_schedule_from_get_refresh_schedule_response(
+        cls, response: requests.Response
+    ):
         response_dict = json.loads(response.text)
         return RefreshSchedule.from_dict(response_dict)

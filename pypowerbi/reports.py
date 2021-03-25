@@ -12,19 +12,19 @@ from pypowerbi.report import Report
 
 class Reports:
     # url snippets
-    groups_snippet = 'groups'
-    reports_snippet = 'reports'
-    rebind_snippet = 'rebind'
-    clone_snippet = 'clone'
-    export_snippet = 'Export'
-    generate_token_snippet = 'generatetoken'
+    groups_snippet = "groups"
+    reports_snippet = "reports"
+    rebind_snippet = "rebind"
+    clone_snippet = "clone"
+    export_snippet = "Export"
+    generate_token_snippet = "generatetoken"
 
     # json keys
-    get_reports_value_key = 'value'
+    get_reports_value_key = "value"
 
     def __init__(self, client):
         self.client = client
-        self.base_url = f'{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}'
+        self.base_url = f"{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}"
 
     def count(self, group_id=None):
         """
@@ -58,12 +58,12 @@ class Reports:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}{self.reports_snippet}/'
+        url = f"{self.base_url}{groups_part}{self.reports_snippet}/"
         # form the headers
         headers = self.client.auth_header
 
@@ -74,7 +74,9 @@ class Reports:
         if response.status_code == 200:
             reports = self.reports_from_get_reports_response(response)
         else:
-            raise HTTPError(response, f'Get reports request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Get reports request returned http error: {response.json()}"
+            )
 
         return reports
 
@@ -92,7 +94,7 @@ class Reports:
             if report.id == report_id:
                 return report
 
-        raise RuntimeError('Could not find report')
+        raise RuntimeError("Could not find report")
 
     def clone_report(self, report_id, name, target_group_id, dataset_id, group_id=None):
         """
@@ -107,12 +109,12 @@ class Reports:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.clone_snippet}'
+        url = f"{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.clone_snippet}"
         # form the headers
         headers = self.client.auth_header
         # form the json
@@ -130,7 +132,9 @@ class Reports:
 
         # 200 - OK. Indicates success.
         if response.status_code != 200:
-            raise HTTPError(response, f'Clone report request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Clone report request returned http error: {response.json()}"
+            )
 
         return Report.from_dict(json.loads(response.text))
 
@@ -143,12 +147,12 @@ class Reports:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/'
+        url = f"{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/"
         # form the headers
         headers = self.client.auth_header
 
@@ -157,7 +161,10 @@ class Reports:
 
         # 200 - OK. Indicates success.
         if response.status_code != 200:
-            raise HTTPError(response, f'Delete report request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Delete report request returned http error: {response.json()}",
+            )
 
     def rebind_report(self, report_id, dataset_id, group_id=None):
         """
@@ -169,25 +176,26 @@ class Reports:
         """
         # group_id can be none, account for it
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.rebind_snippet}'
+        url = f"{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.rebind_snippet}"
         # form the headers
         headers = self.client.auth_header
         # form the json
-        json_dict = {
-            Report.dataset_id_key: dataset_id
-        }
+        json_dict = {Report.dataset_id_key: dataset_id}
 
         # get the response
         response = requests.post(url, headers=headers, json=json_dict)
 
         # 200 - OK. Indicates success.
         if response.status_code != 200:
-            raise HTTPError(response, f'Rebind report request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Rebind report request returned http error: {response.json()}",
+            )
 
     def generate_token(self, report_id, token_request, group_id):
         """
@@ -199,8 +207,10 @@ class Reports:
         :return: Returns the embed token
         """
         # form the url
-        url = f'{self.base_url}/{self.groups_snippet}/{group_id}/' \
-              f'{self.reports_snippet}/{report_id}/{self.generate_token_snippet}'
+        url = (
+            f"{self.base_url}/{self.groups_snippet}/{group_id}/"
+            f"{self.reports_snippet}/{report_id}/{self.generate_token_snippet}"
+        )
         # form the headers
         headers = self.client.auth_header
         # form the json
@@ -211,7 +221,10 @@ class Reports:
 
         # 200 - OK. Indicates success.
         if response.status_code != 200:
-            raise HTTPError(response, f'Generate token for report request returned http error: {response.json()}')
+            raise HTTPError(
+                response,
+                f"Generate token for report request returned http error: {response.json()}",
+            )
 
         return pypowerbi.client.EmbedToken.from_dict(json.loads(response.text))
 
@@ -220,7 +233,7 @@ class Reports:
         report_id: str,
         save_path: str,
         filename: Optional[str] = None,
-        group_id: Optional[str] = None
+        group_id: Optional[str] = None,
     ) -> None:
         """Exports the specified report to a pbix file.
 
@@ -231,12 +244,12 @@ class Reports:
         """
         # group_id can be None. Account for it here
         if group_id is None:
-            groups_part = '/'
+            groups_part = "/"
         else:
-            groups_part = f'/{self.groups_snippet}/{group_id}/'
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
 
         # form the url
-        url = f'{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.export_snippet}'
+        url = f"{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.export_snippet}"
 
         # form the headers
         headers = self.client.auth_header
@@ -247,18 +260,19 @@ class Reports:
         # 200 is the only valid response. Show an error in other cases.
         if response.status_code != 200:
             in_group_part = "" if group_id is None else "in Group"
-            raise HTTPError(response, f'Export Report {in_group_part} request returned an http error: '
-                                      f'{response.json()}')
+            raise HTTPError(
+                response,
+                f"Export Report {in_group_part} request returned an http error: "
+                f"{response.json()}",
+            )
 
         # save report to save path
         if filename is None:
             report = self.get_report(report_id, group_id)
             filename = report.name
 
-        with open(f'{save_path}/{filename}.pbix', 'wb') as report_file:
-            report_file.write(
-                io.BytesIO(response.content).getbuffer()
-            )
+        with open(f"{save_path}/{filename}.pbix", "wb") as report_file:
+            report_file.write(io.BytesIO(response.content).getbuffer())
 
     @classmethod
     def reports_from_get_reports_response(cls, response):

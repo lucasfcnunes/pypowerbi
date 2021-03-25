@@ -14,15 +14,22 @@ from .activity_logs import ActivityLogs
 
 
 class PowerBIClient:
-    default_resource_url = 'https://analysis.windows.net/powerbi/api'
-    default_api_url = 'https://api.powerbi.com'
-    default_authority_url = 'https://login.windows.net/common'
+    default_resource_url = "https://analysis.windows.net/powerbi/api"
+    default_api_url = "https://api.powerbi.com"
+    default_authority_url = "https://login.windows.net/common"
 
-    api_version_snippet = 'v1.0'
-    api_myorg_snippet = 'myorg'
+    api_version_snippet = "v1.0"
+    api_myorg_snippet = "myorg"
 
     @staticmethod
-    def get_client_with_username_password(client_id, username, password, authority_url=None, resource_url=None, api_url=None):
+    def get_client_with_username_password(
+        client_id,
+        username,
+        password,
+        authority_url=None,
+        resource_url=None,
+        api_url=None,
+    ):
         """
         Constructs a client with the option of using common defaults.
 
@@ -43,15 +50,17 @@ class PowerBIClient:
         if api_url is None:
             api_url = PowerBIClient.default_api_url
 
-        context = adal.AuthenticationContext(authority=authority_url,
-                                             validate_authority=True,
-                                             api_version=None)
+        context = adal.AuthenticationContext(
+            authority=authority_url, validate_authority=True, api_version=None
+        )
 
         # get your authentication token
-        token = context.acquire_token_with_username_password(resource=resource_url,
-                                                             client_id=client_id,
-                                                             username=username,
-                                                             password=password)
+        token = context.acquire_token_with_username_password(
+            resource=resource_url,
+            client_id=client_id,
+            username=username,
+            password=password,
+        )
 
         return PowerBIClient(api_url, token)
 
@@ -69,9 +78,7 @@ class PowerBIClient:
     @property
     def auth_header(self):
         if self._auth_header is None:
-            self._auth_header = {
-                'Authorization': f'Bearer {self.token["accessToken"]}'
-            }
+            self._auth_header = {"Authorization": f'Bearer {self.token["accessToken"]}'}
 
         return self._auth_header
 
@@ -79,9 +86,9 @@ class PowerBIClient:
 
 
 class EffectiveIdentity:
-    username_key = 'username'
-    roles_key = 'roles'
-    datasets_key = 'datasets'
+    username_key = "username"
+    roles_key = "roles"
+    datasets_key = "datasets"
 
     def __init__(self, username, roles, datasets):
         self.username = username
@@ -99,12 +106,14 @@ class EffectiveIdentityEncoder(json.JSONEncoder):
 
 
 class TokenRequest:
-    access_level_key = 'accessLevel'
-    dataset_id_key = 'datasetId'
-    allow_saveas_key = 'allowSaveAs'
-    identities_key = 'identities'
+    access_level_key = "accessLevel"
+    dataset_id_key = "datasetId"
+    allow_saveas_key = "allowSaveAs"
+    identities_key = "identities"
 
-    def __init__(self, access_level, dataset_id=None, allow_saveas=None, identities=None):
+    def __init__(
+        self, access_level, dataset_id=None, allow_saveas=None, identities=None
+    ):
         self.access_level = access_level
         self.dataset_id = dataset_id
         self.allow_saveas = allow_saveas
@@ -115,9 +124,7 @@ class TokenRequestEncoder(json.JSONEncoder):
     def default(self, o):
         effective_identity_encoder = EffectiveIdentityEncoder()
 
-        json_dict = {
-            TokenRequest.access_level_key: o.access_level
-        }
+        json_dict = {TokenRequest.access_level_key: o.access_level}
 
         if o.dataset_id is not None:
             json_dict[TokenRequest.dataset_id_key] = o.dataset_id
@@ -126,15 +133,17 @@ class TokenRequestEncoder(json.JSONEncoder):
             json_dict[TokenRequest.allow_saveas_key] = o.allow_saveas
 
         if o.identities is not None:
-            json_dict[TokenRequest.identities_key] = [effective_identity_encoder.default(x) for x in o.identities]
+            json_dict[TokenRequest.identities_key] = [
+                effective_identity_encoder.default(x) for x in o.identities
+            ]
 
         return json_dict
 
 
 class EmbedToken:
-    token_key = 'token'
-    token_id_key = 'tokenId'
-    expiration_key = 'expiration'
+    token_key = "token"
+    token_id_key = "tokenId"
+    expiration_key = "expiration"
 
     def __init__(self, token, token_id, expiration):
         self.token = token
@@ -144,7 +153,7 @@ class EmbedToken:
     @classmethod
     def from_dict(cls, dictionary):
         if cls.token_key not in dictionary:
-            raise RuntimeError(f'Token dict has no {cls.token_key} key')
+            raise RuntimeError(f"Token dict has no {cls.token_key} key")
 
         token = dictionary[cls.token_key]
         token_id = dictionary[cls.token_id_key]
@@ -154,4 +163,4 @@ class EmbedToken:
 
     @property
     def expiration_as_datetime(self):
-        return datetime.datetime.strptime(self.expiration, '%Y-%m-%dT%H:%M:%SZ')
+        return datetime.datetime.strptime(self.expiration, "%Y-%m-%dT%H:%M:%SZ")

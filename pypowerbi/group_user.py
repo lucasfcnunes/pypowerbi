@@ -1,10 +1,10 @@
 # -*- coding: future_fstrings -*-
 class GroupUser:
-    group_user_access_right_key = 'groupUserAccessRight'
-    email_address_key = 'emailAddress'
-    display_name_key = 'displayName'
-    identifier_key = 'identifier'
-    principal_type_key = 'principalType'
+    group_user_access_right_key = "groupUserAccessRight"
+    email_address_key = "emailAddress"
+    display_name_key = "displayName"
+    identifier_key = "identifier"
+    principal_type_key = "principalType"
 
     def __init__(
         self,
@@ -12,7 +12,7 @@ class GroupUser:
         email_address="",
         display_name="",
         identifier="",
-        principal_type=None
+        principal_type=None,
     ):
         """Constructs a GroupUser object
 
@@ -37,7 +37,9 @@ class GroupUser:
         group_user_dict = dict()
 
         if self.group_user_access_right:
-            group_user_dict[self.group_user_access_right_key] = self.group_user_access_right.value
+            group_user_dict[
+                self.group_user_access_right_key
+            ] = self.group_user_access_right.value
 
         if self.email_address:
             group_user_dict[self.email_address_key] = self.email_address

@@ -29,11 +29,7 @@ class UtilsTests(TestCase):
         # Build up several "Records" to convert. The dict_target dictionaries contain what the data should
         # look like after being converted.
 
-        dict1 = {
-            "col1": "Hello",
-            "col2": dt1_str,
-            "col3": dt2_str
-        }
+        dict1 = {"col1": "Hello", "col2": dt1_str, "col3": dt2_str}
 
         dict1_target = dict1.copy()
         dict1_target["col2"] = dt1
@@ -42,15 +38,15 @@ class UtilsTests(TestCase):
         dict2 = {
             "col1": "World",
             "col2": dt3_str,
-            "col3": None        # Make sure it doesn't try to convert None
+            "col3": None,  # Make sure it doesn't try to convert None
         }
         dict2_target = dict2.copy()
         dict2_target["col2"] = dt3
 
         dict3 = {
             "col1": "World",
-            "col2": '',         # Make sure it doesn't try to convert empty strings
-            "col3": dt1_str
+            "col2": "",  # Make sure it doesn't try to convert empty strings
+            "col3": dt1_str,
         }
 
         dict3_target = dict3.copy()

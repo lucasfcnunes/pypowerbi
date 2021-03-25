@@ -6,23 +6,33 @@ from .report import Report
 
 class Import:
     # json keys
-    id_key = 'id'
-    name_key = 'name'
-    created_timedate_key = 'createdDateTime'
-    datasets_key = 'datasets'
-    import_state_key = 'importState'
-    reports_key = 'reports'
-    updated_datetime_key = 'updatedDateTime'
-    source_key = 'source'
-    connection_type_key = 'connectionType'
-    value_key = 'value'
+    id_key = "id"
+    name_key = "name"
+    created_timedate_key = "createdDateTime"
+    datasets_key = "datasets"
+    import_state_key = "importState"
+    reports_key = "reports"
+    updated_datetime_key = "updatedDateTime"
+    source_key = "source"
+    connection_type_key = "connectionType"
+    value_key = "value"
 
     # import state values
-    import_state_succeeded = 'Succeeded'
-    import_state_publishing = 'Publishing'
+    import_state_succeeded = "Succeeded"
+    import_state_publishing = "Publishing"
 
-    def __init__(self, import_id, name=None, created_datetime=None, datasets=None, import_state=None,
-                 reports=None, updated_datetime=None, source=None, connection_type=None):
+    def __init__(
+        self,
+        import_id,
+        name=None,
+        created_datetime=None,
+        datasets=None,
+        import_state=None,
+        reports=None,
+        updated_datetime=None,
+        source=None,
+        connection_type=None,
+    ):
         self.id = import_id
         self.name = name
         self.created_datetime = created_datetime
@@ -58,8 +68,17 @@ class Import:
         source = dictionary.get(cls.source_key)
         connection_type = dictionary.get(cls.connection_type_key)
 
-        return cls(import_id, name, created_datetime, datasets, import_state,
-                   reports, updated_datetime, source, connection_type)
+        return cls(
+            import_id,
+            name,
+            created_datetime,
+            datasets,
+            import_state,
+            reports,
+            updated_datetime,
+            source,
+            connection_type,
+        )
 
     def __repr__(self):
-        return f'<Import {str(self.__dict__)}>'
+        return f"<Import {str(self.__dict__)}>"

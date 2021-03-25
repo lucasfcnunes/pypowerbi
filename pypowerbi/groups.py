@@ -10,15 +10,15 @@ from .group_user import GroupUser
 
 class Groups:
     # url snippets
-    groups_snippet = 'groups'
-    users_snippet = 'users'
+    groups_snippet = "groups"
+    users_snippet = "users"
 
     # json keys
-    get_reports_value_key = 'value'
+    get_reports_value_key = "value"
 
     def __init__(self, client):
         self.client = client
-        self.base_url = f'{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}'
+        self.base_url = f"{self.client.api_url}/{self.client.api_version_snippet}/{self.client.api_myorg_snippet}"
 
     def create_group(self, name, workspace_v2=False):
         """Creates a new workspace
@@ -33,16 +33,18 @@ class Groups:
             raise ValueError("Group name cannot be empty or None")
 
         # define request body
-        body = {'name': name}
+        body = {"name": name}
 
         # create url
-        url = f'{self.base_url}/{self.groups_snippet}'
+        url = f"{self.base_url}/{self.groups_snippet}"
 
         uri_parameters = []
 
         if workspace_v2:
             stripped_workspace_v2 = json.dumps(workspace_v2).strip('"')
-            uri_parameters.append(f'workspaceV2={urllib.parse.quote(stripped_workspace_v2)}')
+            uri_parameters.append(
+                f"workspaceV2={urllib.parse.quote(stripped_workspace_v2)}"
+            )
 
         # add query parameters to url if any
         if len(uri_parameters) > 0:
@@ -56,7 +58,9 @@ class Groups:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(f'Add group request returned the following http error: {response.json()}')
+            raise HTTPError(
+                f"Add group request returned the following http error: {response.json()}"
+            )
 
         return self.create_group_from_create_group_response(response)
 
@@ -91,7 +95,7 @@ class Groups:
 
         # create url
         stripped_group_id = json.dumps(group_id).strip('"')
-        url = f'{self.base_url}/{self.groups_snippet}/{urllib.parse.quote(stripped_group_id)}/{self.users_snippet}'
+        url = f"{self.base_url}/{self.groups_snippet}/{urllib.parse.quote(stripped_group_id)}/{self.users_snippet}"
 
         # form the headers
         headers = self.client.auth_header
@@ -102,8 +106,10 @@ class Groups:
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
             # add group user requests return an empty body; get the error from headers instead
-            error_info = response.headers['x-powerbi-error-info']
-            raise HTTPError(f'Add group request returned the following http error: {error_info}')
+            error_info = response.headers["x-powerbi-error-info"]
+            raise HTTPError(
+                f"Add group request returned the following http error: {error_info}"
+            )
 
     def count(self):
         """
@@ -140,18 +146,18 @@ class Groups:
         query_parameters = []
 
         if filter_str:
-            query_parameters.append(f'$filter={urllib.parse.quote(filter_str)}')
+            query_parameters.append(f"$filter={urllib.parse.quote(filter_str)}")
 
         if top:
             stripped_top = json.dumps(top).strip('"')
-            query_parameters.append(f'$top={urllib.parse.quote(stripped_top)}')
+            query_parameters.append(f"$top={urllib.parse.quote(stripped_top)}")
 
         if skip:
             stripped_skip = json.dumps(skip).strip('"')
-            query_parameters.append(f'$skip={urllib.parse.quote(stripped_skip)}')
+            query_parameters.append(f"$skip={urllib.parse.quote(stripped_skip)}")
 
         # form the url
-        url = f'{self.base_url}/{self.groups_snippet}'
+        url = f"{self.base_url}/{self.groups_snippet}"
 
         # add query parameters to url if any
         if len(query_parameters) > 0:
@@ -164,7 +170,9 @@ class Groups:
 
         # 200 is the only successful code, raise an exception on any other response code
         if response.status_code != 200:
-            raise HTTPError(response, f'Get Groups request returned http error: {response.json()}')
+            raise HTTPError(
+                response, f"Get Groups request returned http error: {response.json()}"
+            )
 
         return self.groups_from_get_groups_response(response)
 
