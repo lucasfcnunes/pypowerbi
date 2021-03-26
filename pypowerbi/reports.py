@@ -18,6 +18,7 @@ class Reports:
     clone_snippet = "clone"
     export_snippet = "Export"
     generate_token_snippet = "generatetoken"
+    update_report_content_snippet = "UpdateReportContent"
 
     # json keys
     get_reports_value_key = "value"
@@ -273,6 +274,50 @@ class Reports:
 
         with open(f"{save_path}/{filename}.pbix", "wb") as report_file:
             report_file.write(io.BytesIO(response.content).getbuffer())
+
+    def update_report_content(
+        self,
+        report_id: str,
+        source_report_id: str,
+        source_group_id: str,
+        source_type: str = "ExistingReport",
+        group_id: Optional[str] = None,
+    ) -> Report:
+        """
+        Updates the specified report
+
+        https://docs.microsoft.com/en-us/rest/api/power-bi/reports/updatereportcontent
+        :param source_type in ["ExistingReport"]
+        :param group_id: The optional group id to get reports from
+        :return: Report
+        """
+
+        if group_id is None:
+            groups_part = "/"
+        else:
+            groups_part = f"/{self.groups_snippet}/{group_id}/"
+
+        url = f"{self.base_url}{groups_part}{self.reports_snippet}/{report_id}/{self.update_report_content_snippet}"
+
+        request_body = {
+            "sourceReport": {
+                "sourceReportId": source_report_id,
+                "sourceWorkspaceId": source_group_id,
+            },
+            "sourceType": source_type,
+        }
+
+        headers = self.client.auth_header
+        response = requests.post(url, headers=headers, json=request_body)
+
+        if response.status_code != 200:
+            raise HTTPError(
+                response,
+                f"Post Update report content request returned http code: {response.json()}",
+            )
+
+        # 200 - OK - Returns report
+        return Report.from_dict(json.loads(response.text))
 
     @classmethod
     def reports_from_get_reports_response(cls, response):
