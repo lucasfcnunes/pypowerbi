@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 import io
 from typing import Optional
 

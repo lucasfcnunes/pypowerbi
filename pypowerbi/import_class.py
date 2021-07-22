@@ -1,5 +1,3 @@
-# -*- coding: future_fstrings -*-
-
 from .dataset import Dataset
 from .report import Report
 

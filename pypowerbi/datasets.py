@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 import requests
 import json
 from pypowerbi.utils import convert_datetime_fields

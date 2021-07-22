@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 from typing import List, Type, Any
 
 import requests

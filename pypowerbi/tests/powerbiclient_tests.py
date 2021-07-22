@@ -1,5 +1,3 @@
-# -*- coding: future_fstrings -*-
-
 import adal
 import datetime
 import time

@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 class GroupUser:
     group_user_access_right_key = "groupUserAccessRight"
     email_address_key = "emailAddress"

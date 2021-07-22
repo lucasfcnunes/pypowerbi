@@ -1,4 +1,3 @@
-# -*- coding: future_fstrings -*-
 import json
 from enum import Enum
 from typing import List, Optional, Dict, Union

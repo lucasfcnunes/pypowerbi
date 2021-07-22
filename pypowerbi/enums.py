@@ -1,5 +1,3 @@
-# -*- coding: future_fstrings -*-
-
 from enum import Enum
 
 
